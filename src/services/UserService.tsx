@@ -11,8 +11,8 @@ export interface User {
 }
 
 interface UserContextType {
-	users : User[]
-
+	users      : User[]
+	login      : (email: string, password: string) => Promise<void>
 	getUser    : (id: string) => Promise<User>,
 	getUsers   : () => Promise<User[]>
 	editUser   : (user: User) => Promise<void>
@@ -63,6 +63,13 @@ export class UserContextProvider extends Component<UserContextProviderProps, Use
 		}
 	}
 
+	login = async (email: string, password: string) => {
+		const token = "TOKEN" + email + Date.now().toLocaleString()
+		localStorage.setItem("token", token)
+		window.location.reload()
+
+	}
+
 	getUsers = async (): Promise<User[]> => {
 		return this.axiosRequest("get")
 	}
@@ -108,6 +115,7 @@ export class UserContextProvider extends Component<UserContextProviderProps, Use
 		return <UserContext.Provider
 			value={{
 				users      : this.state.users,
+				login      : this.login,
 				getUser    : this.getUser,
 				getUsers   : this.getUsers,
 				editUser   : this.editUser,
