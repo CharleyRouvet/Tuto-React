@@ -4,9 +4,11 @@ import {closeSnackbar, SnackbarProvider} from "notistack"
 import CloseIcon                         from "@mui/icons-material/Close"
 import {UserContextProvider}             from "./services/UserService"
 import "./App.css"
+import Login                             from "./content/Login"
 
 
 function App() {
+	const isAuth = localStorage.getItem("token")
 	return (
 		<div className="App">
 			<SnackbarProvider maxSnack={5} dense={true} autoHideDuration={3000}
@@ -14,9 +16,8 @@ function App() {
 				action={(snackbarId) => (
 					<CloseIcon onClick={() => closeSnackbar(snackbarId)}/>
 				)}><UserContextProvider>
-					<Dashboard/>
+					{isAuth ? <Dashboard/> : <Login/>}
 				</UserContextProvider>
-
 			</SnackbarProvider>
 
 		</div>
